@@ -1,0 +1,19 @@
+name: My First CI Pipeline
+
+# 1. Trigger: บอกว่าให้เริ่มทำงานตอนไหน?
+# ในที่นี้คือ "เมื่อมีการ push" โค้ดเข้ามา
+on: [push]
+
+# 2. Jobs: งานที่ต้องทำ
+jobs:
+  say-hello-job:
+    # ให้รันบนเครื่องจำลอง Ubuntu (GitHub เตรียมให้ฟรี)
+    runs-on: ubuntu-latest
+
+    # 3. Steps: ขั้นตอนการทำงานทีละขั้น
+    steps:
+      - name: Step 1 - Say Hello
+        run: echo "Hello World! This is my first CI/CD."
+
+      - name: Step 2 - Show System Info
+        run: date
