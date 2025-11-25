@@ -1,19 +1,25 @@
-name: My First CI Pipeline
+name: React CI Pipeline
 
-# 1. Trigger: บอกว่าให้เริ่มทำงานตอนไหน?
-# ในที่นี้คือ "เมื่อมีการ push" โค้ดเข้ามา
 on: [push]
 
-# 2. Jobs: งานที่ต้องทำ
 jobs:
-  say-hello-job:
-    # ให้รันบนเครื่องจำลอง Ubuntu (GitHub เตรียมให้ฟรี)
+  build-and-test:
     runs-on: ubuntu-latest
 
-    # 3. Steps: ขั้นตอนการทำงานทีละขั้น
     steps:
-      - name: Step 1 - Say Hello
-        run: echo "Hello World! This is my first CI/CD."
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Step 2 - Show System Info
-        run: date
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: npm install -g pnpm && pnpm install
+
+      - name: Run Unit Tests
+        run: npx vitest run
+
+      - name: Build Project
+        run: pnpm run build
