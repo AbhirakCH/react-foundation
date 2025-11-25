@@ -1,22 +1,20 @@
-name: React CI Pipeline
+name: React CI/CD Pipeline
 
 on:
-  # 1. Run when push to main or develop branch
   push:
-    branches:
-      - "main"
-      - "develop"
+    branches: ["main", "develop"] # Run when push to main or develop branch
+  workflow_dispatch: # Allow to run manually
 
-  # 2. Run when open pull request to main or develop branch
-  pull_request:
-    branches:
-      - "main"
-      - "develop"
+# Allow GITHUB_TOKEN to read/write (required for deployment)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-test:
+  # Job 1: Build & Test
+  build-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,3 +32,21 @@ jobs:
 
       - name: Build Project
         run: pnpm run build
+
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist"
+
+  # Job 2: Deploy (will run after Job 1 passed)
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build-test # Wait for build-test to finish
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
