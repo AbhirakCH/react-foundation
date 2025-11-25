@@ -1,6 +1,17 @@
 name: React CI Pipeline
 
-on: [push]
+on:
+  # 1. Run when push to main or develop branch
+  push:
+    branches:
+      - "main"
+      - "develop"
+
+  # 2. Run when open pull request to main or develop branch
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
 
 jobs:
   build-and-test:
