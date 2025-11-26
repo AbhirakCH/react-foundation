@@ -1,11 +1,11 @@
-import { Button } from "./components/ui/Button";
+import { MainLayout } from "./components/Layout/MainLayout";
+import { ChatArea } from "./components/Chat/ChatArea";
 
 function App() {
   return (
-    <>
-      <Button variant="primary">Click</Button>
-      <Button variant="secondary">Click</Button>
-    </>
+    <MainLayout>
+      <ChatArea />
+    </MainLayout>
   );
 }
 
